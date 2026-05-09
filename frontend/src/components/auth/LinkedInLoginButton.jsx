@@ -13,7 +13,8 @@ function LinkedInLoginButton() {
     setError(null)
     setLoading(true)
     try {
-      const { url } = await getLinkedinAuthUrl()
+      const redirectUri = `${window.location.origin}/auth/linkedin/callback`
+      const { url } = await getLinkedinAuthUrl(redirectUri)
       const state = crypto.randomUUID()
       sessionStorage.setItem('linkedin_oauth_state', state)
       window.location.href = `${url}&state=${state}`

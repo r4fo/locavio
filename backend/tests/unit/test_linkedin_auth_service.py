@@ -21,9 +21,11 @@ async def test_exchange_code_for_token_success():
         MockClient.return_value.__aenter__ = AsyncMock(return_value=mock_client)
         MockClient.return_value.__aexit__ = AsyncMock(return_value=False)
 
-        result = await exchange_code_for_token("auth-code-abc")
+        result = await exchange_code_for_token("auth-code-abc", "https://locavio-beta.vercel.app/auth/linkedin/callback")
 
     assert result == "li-token-123"
+    mock_client.post.assert_awaited_once()
+    assert mock_client.post.await_args.kwargs["data"]["redirect_uri"] == "https://locavio-beta.vercel.app/auth/linkedin/callback"
 
 
 @pytest.mark.asyncio
@@ -37,7 +39,7 @@ async def test_exchange_code_for_token_failure_raises_401():
         MockClient.return_value.__aexit__ = AsyncMock(return_value=False)
 
         with pytest.raises(HTTPException) as exc_info:
-            await exchange_code_for_token("bad-code")
+            await exchange_code_for_token("bad-code", "https://locavio-beta.vercel.app/auth/linkedin/callback")
 
     assert exc_info.value.status_code == 401
 

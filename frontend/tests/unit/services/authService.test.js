@@ -63,15 +63,20 @@ describe('authService', () => {
 
   it('linkedinLogin() posts to /auth/linkedin', async () => {
     api.post.mockResolvedValueOnce({ data: { access_token: 'jwt', user: mockUser } })
-    const result = await linkedinLogin('auth-code')
-    expect(api.post).toHaveBeenCalledWith('/auth/linkedin', { code: 'auth-code' })
+    const result = await linkedinLogin('auth-code', 'https://locavio-beta.vercel.app/auth/linkedin/callback')
+    expect(api.post).toHaveBeenCalledWith('/auth/linkedin', {
+      code: 'auth-code',
+      redirect_uri: 'https://locavio-beta.vercel.app/auth/linkedin/callback',
+    })
     expect(result.access_token).toBe('jwt')
   })
 
   it('getLinkedinAuthUrl() calls GET /auth/linkedin/url', async () => {
     api.get.mockResolvedValueOnce({ data: { url: 'https://linkedin.com/oauth' } })
-    const result = await getLinkedinAuthUrl()
-    expect(api.get).toHaveBeenCalledWith('/auth/linkedin/url')
+    const result = await getLinkedinAuthUrl('https://locavio-beta.vercel.app/auth/linkedin/callback')
+    expect(api.get).toHaveBeenCalledWith('/auth/linkedin/url', {
+      params: { redirect_uri: 'https://locavio-beta.vercel.app/auth/linkedin/callback' },
+    })
     expect(result.url).toContain('linkedin.com')
   })
 })

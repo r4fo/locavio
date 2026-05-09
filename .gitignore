@@ -149,7 +149,12 @@ activemq-data/
 
 # Node
 node_modules/
+frontend/node_modules/
 dist/
+
+# Test artifacts
+backend/test.db
+frontend/coverage/
 
 # Environments
 .env

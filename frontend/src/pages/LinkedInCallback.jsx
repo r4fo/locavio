@@ -16,12 +16,16 @@ function LinkedInCallback() {
     const state = searchParams.get('state')
     const error = searchParams.get('error')
 
-    if (error === 'access_denied') {
-      navigate('/login?error=linkedin_denied', { replace: true })
+    console.log('[LinkedIn] Callback params — code:', code ? code.slice(0, 8) + '...' : null, 'state:', state, 'error:', error)
+
+    if (error) {
+      console.error('[LinkedIn] OAuth error from LinkedIn:', error)
+      navigate(error === 'access_denied' ? '/login?error=linkedin_denied' : '/login?error=linkedin_failed', { replace: true })
       return
     }
 
     if (!code) {
+      console.error('[LinkedIn] No code in callback URL')
       navigate('/login?error=linkedin_failed', { replace: true })
       return
     }
@@ -35,16 +39,18 @@ function LinkedInCallback() {
       return
     }
 
-    linkedinLogin(code)
+    const redirectUri = `${window.location.origin}/auth/linkedin/callback`
+
+    linkedinLogin(code, redirectUri)
       .then((data) => {
+        console.log('[LinkedIn] Login successful')
         login(data.user, data.access_token)
         navigate('/dashboard', { replace: true })
       })
       .catch((err) => {
         const reason = err?.response?.data?.detail || err.message || 'Unknown error'
         console.error('[LinkedIn] Token exchange failed:', reason)
-        setFailedReason(reason)
-        setFailed(true)
+        navigate(`/login?error=linkedin_failed&detail=${encodeURIComponent(reason)}`, { replace: true })
       })
   }, [])
 

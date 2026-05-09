@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import { MapPin, Clock, Pencil, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import Badge from '@/components/ui/Badge'
+import { sanitizeText } from '@/utils/sanitize'
 
 function ActivityCard({ activity, onEdit, onDelete, showControls = false }) {
   const { t } = useTranslation()
@@ -15,7 +16,7 @@ function ActivityCard({ activity, onEdit, onDelete, showControls = false }) {
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2 mb-1">
           <h4 className="font-semibold text-espresso text-sm leading-snug">
-            {activity.title}
+            {sanitizeText(activity.title)}
           </h4>
           {showControls && (
             <div className="flex items-center gap-1 shrink-0">
@@ -63,7 +64,7 @@ function ActivityCard({ activity, onEdit, onDelete, showControls = false }) {
         </div>
 
         {activity.description && (
-          <p className="text-xs text-muted mt-1.5 line-clamp-2">{activity.description}</p>
+          <p className="text-xs text-muted mt-1.5 line-clamp-2">{sanitizeText(activity.description)}</p>
         )}
       </div>
     </div>

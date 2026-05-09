@@ -21,8 +21,8 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
 # 3. Configure environment
-cp .env.example .env
-# edit .env with real credentials
+cp ...env.example ...env
+# edit ...env with real credentials
 
 # 4. Run migrations
 alembic upgrade head

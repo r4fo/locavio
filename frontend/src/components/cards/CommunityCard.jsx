@@ -4,6 +4,7 @@ import { MapPin, Users } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
+import { sanitizeText } from '@/utils/sanitize'
 
 function CommunityCard({ community, onJoin, isMember = false }) {
   const navigate = useNavigate()
@@ -31,9 +32,9 @@ function CommunityCard({ community, onJoin, isMember = false }) {
       </div>
 
       <div>
-        <h3 className="font-semibold text-espresso text-base line-clamp-1">{community.name}</h3>
+        <h3 className="font-semibold text-espresso text-base line-clamp-1">{sanitizeText(community.name)}</h3>
         {community.description && (
-          <p className="text-xs text-muted mt-0.5 line-clamp-2">{community.description}</p>
+          <p className="text-xs text-muted mt-0.5 line-clamp-2">{sanitizeText(community.description)}</p>
         )}
       </div>
 

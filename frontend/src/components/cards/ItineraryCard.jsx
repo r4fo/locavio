@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { MapPin, Calendar, Sparkles } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import Badge from '@/components/ui/Badge'
+import { sanitizeText } from '@/utils/sanitize'
 
 const STATUS_VARIANT = {
   draft: 'muted',
@@ -26,7 +27,7 @@ function ItineraryCard({ itinerary }) {
     >
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-semibold text-espresso text-base leading-snug line-clamp-2">
-          {itinerary.title || t('common.empty')}
+          {sanitizeText(itinerary.title) || t('common.empty')}
         </h3>
         {itinerary.generated_by_ai && (
           <span className="shrink-0">
@@ -51,7 +52,7 @@ function ItineraryCard({ itinerary }) {
         {itinerary.location && (
           <span className="flex items-center gap-1.5">
             <MapPin size={13} className="shrink-0" />
-            {itinerary.location}
+            {sanitizeText(itinerary.location)}
           </span>
         )}
         {itinerary.date && (

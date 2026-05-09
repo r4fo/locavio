@@ -9,11 +9,13 @@ import { useAuthStore } from '../../../src/store/authStore'
 // Mock the auth service to avoid real API calls
 vi.mock('../../../src/services/authService', () => ({
   getLinkedinAuthUrl: vi.fn().mockResolvedValue({ url: 'https://linkedin.com/oauth' }),
+  getGithubAuthUrl: vi.fn().mockResolvedValue({ url: 'https://github.com/login/oauth/authorize' }),
   googleLogin: vi.fn(),
   emailLogin: vi.fn(),
   emailRegister: vi.fn(),
   getMe: vi.fn(),
   linkedinLogin: vi.fn(),
+  githubLogin: vi.fn(),
   updateUser: vi.fn(),
   deleteUser: vi.fn(),
 }))
@@ -47,6 +49,11 @@ describe('Login page', () => {
   it('renders LinkedIn button', () => {
     renderLogin()
     expect(screen.getByText('Continue with LinkedIn')).toBeInTheDocument()
+  })
+
+  it('renders GitHub button', () => {
+    renderLogin()
+    expect(screen.getByText('Continue with GitHub')).toBeInTheDocument()
   })
 
   it('renders email input', () => {

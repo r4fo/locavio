@@ -10,6 +10,8 @@ import Sidebar from '@/components/layout/Sidebar'
 import Footer from '@/components/layout/Footer'
 import ProtectedRoute from '@/components/layout/ProtectedRoute'
 import AdminRoute from '@/components/layout/AdminRoute'
+import AdminProtectedRoute from '@/components/layout/AdminProtectedRoute'
+import AdminLayout from '@/components/layout/AdminLayout'
 import Spinner from '@/components/ui/Spinner'
 
 import Landing from '@/pages/Landing'
@@ -27,6 +29,13 @@ import LinkedInCallback from '@/pages/LinkedInCallback'
 import Admin from '@/pages/Admin'
 import Unauthorized from '@/pages/Unauthorized'
 import Permissions from '@/pages/Permissions'
+import GitHubCallback from '@/pages/GitHubCallback'
+import TwoFactorSettings from '@/pages/TwoFactorSettings'
+
+// Admin pages
+import AdminDashboard from '@/pages/admin/AdminDashboard'
+import UserManagement from '@/pages/admin/UserManagement'
+import ContentModeration from '@/pages/admin/ContentModeration'
 
 function AppLayout() {
   return (
@@ -70,7 +79,9 @@ function App() {
             <Route path="/unauthorized" element={<Unauthorized />} />
             <Route path="/admin/permissions" element={<Permissions />} />
             <Route path="/auth/linkedin/callback" element={<LinkedInCallback />} />
+            <Route path="/auth/github/callback" element={<GitHubCallback />} />
 
+            {/* Regular authenticated user routes */}
             <Route element={<ProtectedRoute />}>
               <Route element={<AppLayout />}>
                 <Route path="/onboarding" element={<Onboarding />} />
@@ -82,6 +93,16 @@ function App() {
                 <Route path="/communities/new" element={<CommunityNew />} />
                 <Route path="/communities/:id" element={<CommunityDetail />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/settings/2fa" element={<TwoFactorSettings />} />
+              </Route>
+            </Route>
+
+            {/* Admin-only routes with distinct layout */}
+            <Route element={<AdminProtectedRoute />}>
+              <Route element={<AdminLayout />}>
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/users" element={<UserManagement />} />
+                <Route path="/admin/moderation" element={<ContentModeration />} />
               </Route>
             </Route>
 

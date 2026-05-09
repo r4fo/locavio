@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { LayoutDashboard, Map, Users, Menu, ChevronDown, LogOut, User, Shield } from 'lucide-react'
+import { LayoutDashboard, Map, Users, Menu, ChevronDown, LogOut, User, ShieldCheck } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useUiStore } from '@/store/uiStore'
 import { useLanguage } from '@/hooks/useLanguage'
@@ -149,6 +150,17 @@ function Navbar() {
                   <User size={15} />
                   {t('nav.profile')}
                 </NavLink>
+                {user?.role === 'admin' && (
+                  <NavLink
+                    to="/admin"
+                    role="menuitem"
+                    onClick={() => setUserMenuOpen(false)}
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm text-amber-600 hover:bg-surface transition-colors"
+                  >
+                    <ShieldCheck size={15} />
+                    Admin Dashboard
+                  </NavLink>
+                )}
                 <button
                   role="menuitem"
                   onClick={handleLogout}

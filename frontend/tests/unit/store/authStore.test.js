@@ -6,7 +6,7 @@ const mockToken = 'mock-jwt-token'
 
 describe('authStore', () => {
   beforeEach(() => {
-    localStorage.clear()
+    sessionStorage.clear()
     useAuthStore.setState({ user: null, token: null, isAuthenticated: false })
   })
 
@@ -18,14 +18,14 @@ describe('authStore', () => {
     expect(state.isAuthenticated).toBe(true)
   })
 
-  it('login() saves token to localStorage', () => {
+  it('login() saves token to sessionStorage', () => {
     useAuthStore.getState().login(mockUser, mockToken)
-    expect(localStorage.getItem('locavio_token')).toBe(mockToken)
+    expect(sessionStorage.getItem('locavio_token')).toBe(mockToken)
   })
 
-  it('login() saves user to localStorage', () => {
+  it('login() saves user to sessionStorage', () => {
     useAuthStore.getState().login(mockUser, mockToken)
-    expect(JSON.parse(localStorage.getItem('locavio_user'))).toEqual(mockUser)
+    expect(JSON.parse(sessionStorage.getItem('locavio_user'))).toEqual(mockUser)
   })
 
   it('logout() clears state', () => {
@@ -37,15 +37,15 @@ describe('authStore', () => {
     expect(state.isAuthenticated).toBe(false)
   })
 
-  it('logout() removes token from localStorage', () => {
+  it('logout() removes token from sessionStorage', () => {
     useAuthStore.getState().login(mockUser, mockToken)
     useAuthStore.getState().logout()
-    expect(localStorage.getItem('locavio_token')).toBeNull()
+    expect(sessionStorage.getItem('locavio_token')).toBeNull()
   })
 
-  it('loadFromStorage() restores state from localStorage', () => {
-    localStorage.setItem('locavio_token', mockToken)
-    localStorage.setItem('locavio_user', JSON.stringify(mockUser))
+  it('loadFromStorage() restores state from sessionStorage', () => {
+    sessionStorage.setItem('locavio_token', mockToken)
+    sessionStorage.setItem('locavio_user', JSON.stringify(mockUser))
     useAuthStore.getState().loadFromStorage()
     const state = useAuthStore.getState()
     expect(state.isAuthenticated).toBe(true)

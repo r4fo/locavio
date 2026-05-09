@@ -88,6 +88,13 @@ async def setup_db():
     await engine.dispose()
 
 
+@pytest_asyncio.fixture(autouse=True)
+async def reset_rate_limiter():
+    from app.core.limiter import limiter
+    limiter._storage.reset()
+    yield
+
+
 @pytest_asyncio.fixture
 async def test_db():
     async with TestSessionLocal() as session:
@@ -130,6 +137,7 @@ async def mock_user(test_db):
 @pytest.fixture
 def auth_headers(mock_user):
     token = create_access_token({"sub": str(mock_user.id)})
+    token = create_access_token({"sub": str(mock_user.id), "role": "user"})
     return {"Authorization": f"Bearer {token}"}
 
 
@@ -158,4 +166,5 @@ async def mock_admin(test_db):
 @pytest.fixture
 def admin_headers(mock_admin):
     token = create_access_token({"sub": str(mock_admin.id)})
+    token = create_access_token({"sub": str(mock_admin.id), "role": "admin"})
     return {"Authorization": f"Bearer {token}"}

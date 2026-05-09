@@ -63,24 +63,34 @@ describe('LinkedInCallback', () => {
     renderPage()
     expect(screen.getByText(/Signing you in/i)).toBeTruthy()
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/dashboard', { replace: true }))
+    expect(linkedinLogin).toHaveBeenCalledWith('abc', `${window.location.origin}/auth/linkedin/callback`)
   })
 
-  it('shows failure UI on token exchange error', async () => {
+  it('navigates to login with linkedin_failed on token exchange error', async () => {
     sessionStorage.setItem('linkedin_oauth_state', 'good-state')
     useSearchParams.mockReturnValue(makeSearchParams({ code: 'abc', state: 'good-state' }))
     linkedinLogin.mockRejectedValueOnce({
       response: { data: { detail: 'Token expired' } },
     })
     renderPage()
-    await waitFor(() => expect(screen.getByText(/Sign in failed/i)).toBeTruthy())
-    expect(screen.getByText('Token expired')).toBeTruthy()
+    await waitFor(() =>
+      expect(mockNavigate).toHaveBeenCalledWith(
+        '/login?error=linkedin_failed&detail=Token%20expired',
+        { replace: true }
+      )
+    )
   })
 
-  it('shows back to login button in failure state', async () => {
+  it('navigates to login with linkedin_failed on generic error', async () => {
     sessionStorage.setItem('linkedin_oauth_state', 'good-state')
     useSearchParams.mockReturnValue(makeSearchParams({ code: 'abc', state: 'good-state' }))
     linkedinLogin.mockRejectedValueOnce(new Error('boom'))
     renderPage()
-    await waitFor(() => expect(screen.getByText('Back to login')).toBeTruthy())
+    await waitFor(() =>
+      expect(mockNavigate).toHaveBeenCalledWith(
+        '/login?error=linkedin_failed&detail=boom',
+        { replace: true }
+      )
+    )
   })
 })

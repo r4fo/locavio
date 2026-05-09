@@ -153,6 +153,29 @@ function Profile() {
         <Button type="submit" loading={saving}>{t('profile.save')}</Button>
       </form>
 
+      {/* Security section */}
+      <div className="card flex flex-col gap-3">
+        <h2 className="text-sm font-semibold text-espresso">🔒 Security</h2>
+        <div className="flex items-center justify-between p-3 bg-surface rounded-lg">
+          <div>
+            <p className="text-sm font-medium text-espresso">Two-Factor Authentication</p>
+            <p className="text-xs text-muted">
+              {user?.totp_enabled ? 'Enabled — your account has extra protection' : 'Add an extra layer of security'}
+            </p>
+          </div>
+          <button
+            onClick={() => navigate('/settings/2fa')}
+            className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors
+              ${user?.totp_enabled
+                ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                : 'bg-primary/10 text-primary hover:bg-primary/20'
+              }`}
+          >
+            {user?.totp_enabled ? 'Manage' : 'Enable'}
+          </button>
+        </div>
+      </div>
+
       <div className="card border border-danger/30 flex flex-col gap-3">
         <h2 className="text-sm font-semibold text-danger">{t('profile.danger_zone')}</h2>
         <p className="text-xs text-muted">{t('profile.delete_confirm')}</p>

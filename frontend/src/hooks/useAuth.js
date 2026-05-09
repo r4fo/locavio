@@ -12,6 +12,10 @@ export function useAuth() {
 
   const loginWithEmail = async (email, password) => {
     const data = await emailLogin(email, password)
+    // If 2FA is required, don't store token yet — the Login page handles the next step
+    if (data.requires_2fa) {
+      return data
+    }
     login(data.user, data.access_token)
     return data
   }

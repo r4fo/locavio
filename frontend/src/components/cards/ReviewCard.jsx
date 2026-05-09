@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import StarRating from '@/components/ui/StarRating'
+import { sanitizeText } from '@/utils/sanitize'
 
 function ReviewCard({ review }) {
   const { t } = useTranslation()
@@ -27,7 +28,7 @@ function ReviewCard({ review }) {
         <StarRating rating={review.rating} />
 
         {review.comment && (
-          <p className="text-sm text-muted mt-1.5 leading-relaxed">{review.comment}</p>
+          <p className="text-sm text-muted mt-1.5 leading-relaxed">{sanitizeText(review.comment)}</p>
         )}
       </div>
     </div>
