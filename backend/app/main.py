@@ -35,9 +35,13 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(SecurityHeadersMiddleware)
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
+# Support comma-separated list of allowed origins (e.g. "https://app.com,https://preview.app.com")
+_extra_origins = [u.strip().rstrip("/") for u in FRONTEND_URL.split(",") if u.strip()]
+_allowed_origins = list({"http://localhost:5173", *_extra_origins})
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", FRONTEND_URL],
+    allow_origins=_allowed_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type", "Accept", "X-Request-ID"],

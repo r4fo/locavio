@@ -18,6 +18,11 @@ class Settings(BaseSettings):
     GITHUB_CLIENT_SECRET: str = ""
     FRONTEND_URL: str = "http://localhost:5173"
 
+    @field_validator("FRONTEND_URL", mode="before")
+    @classmethod
+    def strip_frontend_url(cls, v: str) -> str:
+        return v.rstrip("/")
+
     GEMINI_API_KEY: str = ""
     OPENAI_API_KEY: str = ""
     GOOGLE_MAPS_API_KEY: str = ""

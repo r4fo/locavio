@@ -27,6 +27,7 @@ function LinkedInLoginButton() {
   return (
     <div className="w-full flex flex-col gap-2">
       <button
+        type="button"
         onClick={handleClick}
         disabled={loading}
         aria-label="Continue with LinkedIn"
