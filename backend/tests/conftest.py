@@ -114,7 +114,6 @@ async def test_client(test_db):
 
 @pytest_asyncio.fixture
 async def mock_user(test_db):
-    # Use a unique email to avoid conflicts across test runs
     import uuid
     unique_email = f"test-{uuid.uuid4().hex[:8]}@example.com"
     user = User(
@@ -122,6 +121,7 @@ async def mock_user(test_db):
         name="Test User",
         auth_provider=AuthProvider.email,
         password_hash="hashed",
+        role=UserRole.user,
     )
     test_db.add(user)
     await test_db.commit()
@@ -136,6 +136,7 @@ async def mock_user(test_db):
 
 @pytest.fixture
 def auth_headers(mock_user):
+    token = create_access_token({"sub": str(mock_user.id)})
     token = create_access_token({"sub": str(mock_user.id), "role": "user"})
     return {"Authorization": f"Bearer {token}"}
 
@@ -164,5 +165,6 @@ async def mock_admin(test_db):
 
 @pytest.fixture
 def admin_headers(mock_admin):
+    token = create_access_token({"sub": str(mock_admin.id)})
     token = create_access_token({"sub": str(mock_admin.id), "role": "admin"})
     return {"Authorization": f"Bearer {token}"}

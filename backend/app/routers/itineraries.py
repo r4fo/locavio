@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.core.dependencies import get_current_active_user, get_language
+from app.core.dependencies import get_current_active_user, get_language, require_role
 from app.models.itinerary import ItineraryPurpose, ItineraryStatus
 from app.models.user import User
 from app.schemas.itinerary import (
@@ -35,7 +35,7 @@ async def list_itineraries(
 async def generate_itinerary(
     data: ItineraryGenerateRequest,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(require_role("user", "admin")),
     language: str = Depends(get_language),
 ):
     return await itinerary_service.generate_ai_itinerary(db, current_user.id, data, language)
@@ -45,7 +45,7 @@ async def generate_itinerary(
 async def create_itinerary(
     data: ItineraryCreate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(require_role("user", "admin")),
     language: str = Depends(get_language),
 ):
     return await itinerary_service.create_itinerary(db, current_user.id, data, language)
@@ -71,7 +71,7 @@ async def update_itinerary(
     itinerary_id: int,
     data: ItineraryUpdate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(require_role("user", "admin")),
     language: str = Depends(get_language),
 ):
     itinerary = await itinerary_service.get_itinerary(db, itinerary_id, language)
@@ -86,7 +86,7 @@ async def update_itinerary(
 async def delete_itinerary(
     itinerary_id: int,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(require_role("user", "admin")),
     language: str = Depends(get_language),
 ):
     itinerary = await itinerary_service.get_itinerary(db, itinerary_id, language)

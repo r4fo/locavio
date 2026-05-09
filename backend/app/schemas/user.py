@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, EmailStr
 
@@ -19,6 +20,10 @@ class UserUpdate(BaseModel):
     avatar_url: str | None = None
     location: str | None = None
     preferences: dict | None = None
+
+
+class UserRoleUpdate(BaseModel):
+    role: Literal['guest', 'user', 'admin']
 
 
 class UserResponse(BaseModel):

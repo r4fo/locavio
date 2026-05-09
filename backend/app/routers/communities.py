@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.core.dependencies import get_current_active_user, get_language
+from app.core.dependencies import get_current_active_user, get_language, require_role
 from app.models.membership import MembershipRole
 from app.models.user import User
 from app.schemas.community import CommunityCreate, CommunityResponse, CommunityUpdate
@@ -40,7 +40,7 @@ async def list_communities(
 async def create_community(
     data: CommunityCreate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(require_role("user", "admin")),
     language: str = Depends(get_language),
 ):
     community = await community_service.create_community(db, current_user.id, data, language)
@@ -65,7 +65,7 @@ async def update_community(
     community_id: int,
     data: CommunityUpdate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(require_role("user", "admin")),
     language: str = Depends(get_language),
 ):
     row = await community_service.get_community(db, community_id, language)
@@ -89,7 +89,7 @@ async def update_community(
 async def delete_community(
     community_id: int,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(require_role("user", "admin")),
     language: str = Depends(get_language),
 ):
     row = await community_service.get_community(db, community_id, language)
@@ -97,7 +97,8 @@ async def delete_community(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Community not found")
 
     community, _ = row
-    if community.created_by != current_user.id:
+    is_admin = current_user.role == "admin"
+    if community.created_by != current_user.id and not is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Only the creator can delete this community",
@@ -109,7 +110,7 @@ async def delete_community(
 async def join_community(
     community_id: int,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(require_role("user", "admin")),
     language: str = Depends(get_language),
 ):
     row = await community_service.get_community(db, community_id, language)

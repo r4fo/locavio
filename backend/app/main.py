@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
+from app.routers import auth, users, itineraries, activities, communities, reviews, admin
 from app.core.limiter import limiter
 from app.core.security_headers import SecurityHeadersMiddleware
 from app.routers import admin, auth, users, itineraries, activities, communities, reviews

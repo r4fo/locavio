@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { MapPin, Users } from 'lucide-react'
+import { MapPin, Users, Trash2 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useCommunity } from '@/hooks/useCommunity'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import Spinner from '@/components/ui/Spinner'
+import Modal from '@/components/ui/Modal'
 
 const TABS = ['about', 'members', 'activities']
 
@@ -15,11 +16,17 @@ function CommunityDetail() {
   const { t } = useTranslation()
   const user = useAuthStore((state) => state.user)
 
-  const { community, members, loading, error, fetchOne, fetchMembers, join, leave } = useCommunity()
+  const navigate = useNavigate()
+  const { community, members, loading, error, fetchOne, fetchMembers, join, leave, deleteCommunity } = useCommunity()
   const [activeTab, setActiveTab] = useState('about')
   const [isMember, setIsMember] = useState(false)
   const [memberLoading, setMemberLoading] = useState(false)
   const [page, setPage] = useState(1)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+
+  const isAdmin = user?.role === 'admin'
+  const isCreator = community && user && community.created_by === user.id
 
   useEffect(() => {
     document.title = 'Locavio — Community'
@@ -61,6 +68,19 @@ function CommunityDetail() {
     }
   }
 
+  const handleDelete = async () => {
+    setDeleting(true)
+    try {
+      await deleteCommunity(id)
+      navigate('/communities')
+    } catch {
+      // error already set in hook
+    } finally {
+      setDeleting(false)
+      setShowDeleteModal(false)
+    }
+  }
+
   if (loading && !community) return <div className="flex justify-center py-20"><Spinner size="lg" /></div>
   if (error) return <div className="text-danger text-center py-10">{error}</div>
   if (!community) return null
@@ -91,15 +111,26 @@ function CommunityDetail() {
             </span>
           </div>
         </div>
-        <Button
-          variant={isMember ? 'secondary' : 'primary'}
-          onClick={isMember ? handleLeave : handleJoin}
-          loading={memberLoading}
-          size="sm"
-          className="shrink-0"
-        >
-          {isMember ? t('community.leave') : t('community.join')}
-        </Button>
+        <div className="flex items-center gap-2 shrink-0">
+          <Button
+            variant={isMember ? 'secondary' : 'primary'}
+            onClick={isMember ? handleLeave : handleJoin}
+            loading={memberLoading}
+            size="sm"
+          >
+            {isMember ? t('community.leave') : t('community.join')}
+          </Button>
+          {(isAdmin || isCreator) && (
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className="p-2 rounded-lg text-danger hover:bg-danger/10 transition-colors"
+              title="Delete community"
+              aria-label="Delete community"
+            >
+              <Trash2 size={17} />
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="flex border-b border-accent/30" role="tablist">
@@ -163,6 +194,31 @@ function CommunityDetail() {
           <p className="text-muted text-sm">{t('community.coming_soon')}</p>
         </div>
       )}
+      <Modal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Delete Community"
+      >
+        <p className="text-espresso mb-6">
+          Are you sure you want to delete <strong>{community.name}</strong>? This will remove all members and cannot be undone.
+        </p>
+        <div className="flex gap-3 justify-end">
+          <button
+            onClick={() => setShowDeleteModal(false)}
+            className="btn-secondary"
+            disabled={deleting}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleDelete}
+            className="bg-danger text-white rounded-lg px-4 py-2 hover:bg-danger/80 transition-colors font-medium disabled:opacity-50"
+            disabled={deleting}
+          >
+            {deleting ? 'Deleting…' : 'Delete Community'}
+          </button>
+        </div>
+      </Modal>
     </div>
   )
 }

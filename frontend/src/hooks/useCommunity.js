@@ -84,6 +84,16 @@ export function useCommunity() {
     }
   }
 
+  const deleteCommunity = async (id) => {
+    try {
+      await communityService.remove(id)
+    } catch (err) {
+      const message = err.response?.data?.detail || 'Failed to delete community'
+      setError(message)
+      throw err
+    }
+  }
+
   return {
     communities,
     community,
@@ -96,5 +106,6 @@ export function useCommunity() {
     join,
     leave,
     createCommunity,
+    deleteCommunity,
   }
 }

@@ -1,9 +1,13 @@
 import { create } from 'zustand'
 
-export const useAuthStore = create((set) => ({
+export const useAuthStore = create((set, get) => ({
   user: null,
   token: null,
   isAuthenticated: false,
+
+  get isAdmin() { return get().user?.role === 'admin' },
+  get isGuest() { return get().user?.role === 'guest' },
+  get isUser() { return get().user?.role === 'user' || get().user?.role === 'admin' },
 
   login: (user, token) => {
     sessionStorage.setItem('locavio_token', token)

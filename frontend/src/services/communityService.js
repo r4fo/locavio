@@ -18,5 +18,8 @@ export const join = (id) =>
 export const leave = (id) =>
   api.delete(`/communities/${id}/leave`)
 
+export const remove = (id) =>
+  api.delete(`/communities/${id}`)
+
 export const getMembers = (id, params = {}) =>
   api.get(`/communities/${id}/members`, { params }).then((r) => r.data)

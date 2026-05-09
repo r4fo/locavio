@@ -43,6 +43,8 @@ async def run_async_migrations() -> None:
         {**config.get_section(config.config_ini_section, {}), "sqlalchemy.url": settings.DATABASE_URL},
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
+        # Supabase uses PgBouncer in transaction mode which doesn't support
+        # prepared statements — disable the cache so migrations can run.
         connect_args={"statement_cache_size": 0},
     )
     async with connectable.connect() as connection:

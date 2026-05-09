@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { LayoutDashboard, Map, Users, Menu, ChevronDown, LogOut, User, Shield } from 'lucide-react'
 import { LayoutDashboard, Map, Users, Menu, ChevronDown, LogOut, User, ShieldCheck } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useUiStore } from '@/store/uiStore'
@@ -77,6 +78,18 @@ function Navbar() {
               {label}
             </NavLink>
           ))}
+          {user?.role === 'admin' && (
+            <NavLink
+              to="/admin"
+              className={({ isActive }) =>
+                `flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                ${isActive ? 'bg-primary text-white' : 'text-primary hover:bg-surface border border-primary/30'}`
+              }
+            >
+              <Shield size={16} />
+              Admin
+            </NavLink>
+          )}
         </nav>
 
         <div className="flex items-center gap-2">

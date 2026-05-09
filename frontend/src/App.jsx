@@ -9,6 +9,7 @@ import Navbar from '@/components/layout/Navbar'
 import Sidebar from '@/components/layout/Sidebar'
 import Footer from '@/components/layout/Footer'
 import ProtectedRoute from '@/components/layout/ProtectedRoute'
+import AdminRoute from '@/components/layout/AdminRoute'
 import AdminProtectedRoute from '@/components/layout/AdminProtectedRoute'
 import AdminLayout from '@/components/layout/AdminLayout'
 import Spinner from '@/components/ui/Spinner'
@@ -25,6 +26,9 @@ import CommunityNew from '@/pages/CommunityNew'
 import CommunityDetail from '@/pages/CommunityDetail'
 import Profile from '@/pages/Profile'
 import LinkedInCallback from '@/pages/LinkedInCallback'
+import Admin from '@/pages/Admin'
+import Unauthorized from '@/pages/Unauthorized'
+import Permissions from '@/pages/Permissions'
 import GitHubCallback from '@/pages/GitHubCallback'
 import TwoFactorSettings from '@/pages/TwoFactorSettings'
 
@@ -72,6 +76,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="/admin/permissions" element={<Permissions />} />
             <Route path="/auth/linkedin/callback" element={<LinkedInCallback />} />
             <Route path="/auth/github/callback" element={<GitHubCallback />} />
 
@@ -97,6 +103,12 @@ function App() {
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/users" element={<UserManagement />} />
                 <Route path="/admin/moderation" element={<ContentModeration />} />
+              </Route>
+            </Route>
+
+            <Route element={<AdminRoute />}>
+              <Route element={<AppLayout />}>
+                <Route path="/admin" element={<Admin />} />
               </Route>
             </Route>
 

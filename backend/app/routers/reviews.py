@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.core.dependencies import get_current_active_user, get_language
+from app.core.dependencies import get_current_active_user, get_language, require_role
 from app.models.user import User
 from app.schemas.review import ActivityReviewsResponse, ReviewCreate, ReviewResponse, ReviewUpdate
 from app.services import review_service
@@ -15,7 +15,7 @@ router = APIRouter(prefix="/api/v1/reviews", tags=["Reviews"])
 async def create_review(
     data: ReviewCreate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(require_role("user", "admin")),
     language: str = Depends(get_language),
 ):
     existing = await review_service.get_review_by_user_activity(
@@ -60,7 +60,7 @@ async def update_review(
     review_id: int,
     data: ReviewUpdate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(require_role("user", "admin")),
     language: str = Depends(get_language),
 ):
     review = await review_service.get_review(db, review_id)
@@ -75,7 +75,7 @@ async def update_review(
 async def delete_review(
     review_id: int,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(require_role("user", "admin")),
     language: str = Depends(get_language),
 ):
     review = await review_service.get_review(db, review_id)

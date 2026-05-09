@@ -55,6 +55,20 @@ async def get_current_active_user(
     return user
 
 
+def require_role(*roles: str):
+    """Return a dependency that enforces the user has one of the specified roles."""
+    async def _check_role(user: User = Depends(get_current_active_user)) -> User:
+        if user.role not in roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Insufficient permissions",
+            )
+        return user
+    return _check_role
+
+
+require_admin = Depends(require_role("admin"))
+require_user = Depends(require_role("user", "admin"))
 async def get_current_active_admin(
     current_user: User = Depends(get_current_active_user),
 ) -> User:
