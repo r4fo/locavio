@@ -1,14 +1,26 @@
 import api from './api'
 
-/**
- * Admin API service — all these endpoints require admin authentication.
- */
+export const getUsers = (searchOrParams = '', skip = 0, limit = 50) => {
+  const params = typeof searchOrParams === 'object' && searchOrParams !== null
+    ? searchOrParams
+    : { search: searchOrParams, skip, limit }
 
-export const getUsers = (search = '', skip = 0, limit = 50) =>
-  api.get('/admin/users', { params: { search: search || undefined, skip, limit } }).then((r) => r.data)
+  return api.get('/admin/users', {
+    params: {
+      search: params.search || undefined,
+      role: params.role || undefined,
+      skip: params.skip ?? 0,
+      limit: params.limit ?? 50,
+      page: params.page,
+    },
+  }).then((r) => r.data)
+}
 
 export const updateUser = (userId, data) =>
   api.patch(`/admin/users/${userId}`, data).then((r) => r.data)
+
+export const updateUserRole = (userId, role) =>
+  updateUser(userId, { role })
 
 export const getStats = () =>
   api.get('/admin/stats').then((r) => r.data)
@@ -18,3 +30,18 @@ export const getItineraries = (skip = 0, limit = 50) =>
 
 export const deleteItinerary = (itineraryId) =>
   api.delete(`/admin/itineraries/${itineraryId}`)
+
+export const deleteUser = (userId) =>
+  api.delete(`/admin/users/${userId}`)
+
+const adminService = {
+  getUsers,
+  updateUser,
+  updateUserRole,
+  getStats,
+  getItineraries,
+  deleteItinerary,
+  deleteUser,
+}
+
+export default adminService

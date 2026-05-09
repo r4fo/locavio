@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Map, Users, Menu, ChevronDown, LogOut, User, Shield } from 'lucide-react'
-import { LayoutDashboard, Map, Users, Menu, ChevronDown, LogOut, User, ShieldCheck } from 'lucide-react'
+import { LayoutDashboard, Map, Users, Menu, ChevronDown, LogOut, User, Shield, ShieldCheck } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useUiStore } from '@/store/uiStore'
 import { useLanguage } from '@/hooks/useLanguage'
