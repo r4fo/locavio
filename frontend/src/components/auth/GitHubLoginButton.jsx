@@ -13,7 +13,8 @@ function GitHubLoginButton() {
     setError(null)
     setLoading(true)
     try {
-      const { url } = await getGithubAuthUrl()
+      const redirectUri = `${window.location.origin}/auth/github/callback`
+      const { url } = await getGithubAuthUrl(redirectUri)
       const state = crypto.randomUUID()
       sessionStorage.setItem('github_oauth_state', state)
       window.location.href = `${url}&state=${state}`

@@ -30,7 +30,8 @@ function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState(() => {
     const errParam = searchParams.get('error')
-    return OAUTH_ERROR_MESSAGES[errParam] || ''
+    const detailParam = searchParams.get('detail')
+    return detailParam || OAUTH_ERROR_MESSAGES[errParam] || ''
   })
   const [loading, setLoading] = useState(false)
 
