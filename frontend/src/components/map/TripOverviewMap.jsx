@@ -29,7 +29,7 @@ function MapResizer() {
 
   // Re-invalidate after sidebar slide transition (300 ms) completes
   useEffect(() => {
-    const t = setTimeout(() => map.invalidateSize(), 320)
+    const t = setTimeout(() => map.invalidateSize(), 450)
     return () => clearTimeout(t)
   }, [sidebarOpen, map])
 
@@ -52,7 +52,7 @@ function TripOverviewMap({ itineraries = [] }) {
   const defaultZoom = validItineraries.length > 0 ? 5 : 2
 
   return (
-    <div className="w-full max-w-full rounded-xl overflow-hidden shadow-sm border border-accent/20" style={{ height: 400 }}>
+    <div className="w-full max-w-full rounded-xl overflow-hidden shadow-sm border border-accent/20" style={{ height: 400, transform: 'translateZ(0)', isolation: 'isolate' }}>
       <MapContainer
         center={defaultCenter}
         zoom={defaultZoom}

@@ -28,7 +28,7 @@ function MapResizer() {
   }, [map])
 
   useEffect(() => {
-    const t = setTimeout(() => map.invalidateSize(), 320)
+    const t = setTimeout(() => map.invalidateSize(), 450)
     return () => clearTimeout(t)
   }, [sidebarOpen, map])
 
@@ -59,7 +59,7 @@ function ItineraryDetailMap({ activities = [] }) {
   const polylinePositions = validActivities.map((a) => [a.lat, a.lng])
 
   return (
-    <div className="w-full max-w-full rounded-xl overflow-hidden shadow-sm border border-accent/20" style={{ height: 350 }}>
+    <div className="w-full max-w-full rounded-xl overflow-hidden shadow-sm border border-accent/20" style={{ height: 350, transform: 'translateZ(0)', isolation: 'isolate' }}>
       <MapContainer
         center={bounds[0]}
         zoom={13}
