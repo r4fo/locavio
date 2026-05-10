@@ -2,7 +2,7 @@ from pathlib import Path
 from pydantic import field_validator
 from pydantic_settings import BaseSettings
 
-_env_file = Path(__file__).parents[2] / "...env"
+_env_file = Path(__file__).parents[2] / ".env"
 
 
 class Settings(BaseSettings):

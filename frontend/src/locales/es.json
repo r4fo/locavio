@@ -98,7 +98,15 @@
     "description_label": "Descripción",
     "description_placeholder": "¿De qué trata esta comunidad?",
     "cover_image_label": "URL de imagen de portada (opcional)",
-    "create_btn": "Crear comunidad"
+    "create_btn": "Crear comunidad",
+    "no_posts": "Sin publicaciones todavía. ¡Inicia la primera discusión!",
+    "no_comments": "Sin comentarios todavía.",
+    "post_placeholder": "¿Qué tienes en mente?",
+    "image_url_placeholder": "URL de imagen (opcional)",
+    "post_btn": "Publicar",
+    "comment_placeholder": "Escribe un comentario...",
+    "comment_btn": "Comentar",
+    "login_to_post": "Inicia sesión para publicar en esta comunidad."
   },
   "auth": {
     "welcome": "Bienvenido de vuelta",

@@ -8,6 +8,7 @@ import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import Spinner from '@/components/ui/Spinner'
 import Modal from '@/components/ui/Modal'
+import PostsTab from '@/components/community/PostsTab'
 
 const TABS = ['about', 'members', 'activities']
 
@@ -189,10 +190,7 @@ function CommunityDetail() {
       )}
 
       {activeTab === 'activities' && (
-        <div className="flex flex-col items-center gap-3 py-12 text-center">
-          <span className="text-4xl">🚧</span>
-          <p className="text-muted text-sm">{t('community.coming_soon')}</p>
-        </div>
+        <PostsTab communityId={id} user={user} />
       )}
       <Modal
         isOpen={showDeleteModal}

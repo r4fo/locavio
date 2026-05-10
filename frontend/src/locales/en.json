@@ -98,7 +98,15 @@
     "description_label": "Description",
     "description_placeholder": "What is this community about?",
     "cover_image_label": "Cover image URL (optional)",
-    "create_btn": "Create community"
+    "create_btn": "Create community",
+    "no_posts": "No posts yet. Start the first discussion!",
+    "no_comments": "No comments yet.",
+    "post_placeholder": "What's on your mind?",
+    "image_url_placeholder": "Image URL (optional)",
+    "post_btn": "Post",
+    "comment_placeholder": "Write a comment...",
+    "comment_btn": "Comment",
+    "login_to_post": "Sign in to post in this community."
   },
   "auth": {
     "welcome": "Welcome back",

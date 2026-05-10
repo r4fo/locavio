@@ -31,7 +31,11 @@ class Community(Base):
     memberships: Mapped[list["Membership"]] = relationship(
         "Membership", back_populates="community", cascade="all, delete-orphan"
     )
+    posts: Mapped[list["CommunityPost"]] = relationship(
+        "CommunityPost", back_populates="community", cascade="all, delete-orphan"
+    )
 
 
 from app.models.user import User  # noqa: E402
 from app.models.membership import Membership  # noqa: E402
+from app.models.post import CommunityPost  # noqa: E402

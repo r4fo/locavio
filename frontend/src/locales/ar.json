@@ -99,7 +99,15 @@
     "description_label": "الوصف",
     "description_placeholder": "ما الذي يدور حوله هذا المجتمع؟",
     "cover_image_label": "رابط صورة الغلاف (اختياري)",
-    "create_btn": "إنشاء المجتمع"
+    "create_btn": "إنشاء المجتمع",
+    "no_posts": "لا توجد منشورات بعد. ابدأ أول نقاش!",
+    "no_comments": "لا توجد تعليقات بعد.",
+    "post_placeholder": "ما الذي يدور في ذهنك؟",
+    "image_url_placeholder": "رابط الصورة (اختياري)",
+    "post_btn": "نشر",
+    "comment_placeholder": "اكتب تعليقاً...",
+    "comment_btn": "تعليق",
+    "login_to_post": "سجّل الدخول للنشر في هذا المجتمع."
   },
   "auth": {
     "welcome": "أهلاً بعودتك",
