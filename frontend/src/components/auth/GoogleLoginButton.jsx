@@ -21,7 +21,8 @@ function GoogleLoginButton() {
   }
 
   const handleError = () => {
-    setError(t('common.error'))
+    setError('Google sign-in failed. Check console for details.')
+    console.error('[Google OAuth] handleError triggered — check Google Cloud Console authorized origins')
   }
 
   return (
