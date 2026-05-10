@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { GoogleLogin } from '@react-oauth/google'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
@@ -9,6 +9,17 @@ function GoogleLoginButton() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const [error, setError] = useState(null)
+  const containerRef = useRef(null)
+  const [buttonWidth, setButtonWidth] = useState(400)
+
+  useEffect(() => {
+    if (!containerRef.current) return
+    const observer = new ResizeObserver(([entry]) => {
+      setButtonWidth(Math.floor(entry.contentRect.width))
+    })
+    observer.observe(containerRef.current)
+    return () => observer.disconnect()
+  }, [])
 
   const handleSuccess = async (credentialResponse) => {
     setError(null)
@@ -26,14 +37,14 @@ function GoogleLoginButton() {
   }
 
   return (
-    <div className="w-full flex flex-col items-center gap-2">
+    <div ref={containerRef} className="w-full flex flex-col items-center gap-2">
       <GoogleLogin
         onSuccess={handleSuccess}
         onError={handleError}
         useOneTap={false}
         theme="outline"
         size="large"
-        width="400"
+        width={buttonWidth}
         text="signin_with"
         shape="rectangular"
       />

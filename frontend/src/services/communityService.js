@@ -1,13 +1,13 @@
 import api from './api'
 
 export const getAll = (params = {}) =>
-  api.get('/communities', { params }).then((r) => r.data)
+  api.get('/communities/', { params }).then((r) => r.data)
 
 export const getOne = (id) =>
   api.get(`/communities/${id}`).then((r) => r.data)
 
 export const create = (data) =>
-  api.post('/communities', data).then((r) => r.data)
+  api.post('/communities/', data).then((r) => r.data)
 
 export const update = (id, data) =>
   api.put(`/communities/${id}`, data).then((r) => r.data)
