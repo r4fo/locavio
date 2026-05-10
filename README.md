@@ -193,9 +193,15 @@ Full interactive documentation: `http://localhost:8000/docs`
 
 ## Deployment
 
-- **Frontend** — Deployed on [Vercel](https://vercel.com). Set `VITE_API_URL` and `VITE_GOOGLE_CLIENT_ID` in Vercel environment variables.
-- **Backend** — Can be deployed on Railway, Render, or any platform supporting Python. Set all backend environment variables in the platform dashboard.
-- **Database** — Hosted on [Supabase](https://supabase.com). No separate production database setup needed.
+| | |
+|---|---|
+| **Frontend** | [https://locavio-lemon.vercel.app](https://locavio-lemon.vercel.app) — deployed on Vercel |
+| **Backend** | [https://locavio-production.up.railway.app](https://locavio-production.up.railway.app) — deployed on Railway |
+| **Database** | Hosted on [Supabase](https://supabase.com) (PostgreSQL) |
+
+**Vercel** — set `VITE_API_URL` and `VITE_GOOGLE_CLIENT_ID` in the Vercel project environment variables.
+
+**Railway** — set all backend environment variables (`DATABASE_URL`, `SECRET_KEY`, `GOOGLE_CLIENT_ID`, `FRONTEND_URL`, etc.) in the Railway service variables dashboard. The Dockerfile runs `alembic upgrade head` automatically on each deploy.
 
 ---
 
