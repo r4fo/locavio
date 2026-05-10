@@ -15,7 +15,7 @@ if config.config_file_name is not None:
 # Import all models so Alembic can detect them
 from app.core.database import Base  # noqa: E402
 from app.core.config import settings  # noqa: E402
-from app.models import user, itinerary, activity, community, membership, review  # noqa: E402
+from app.models import user, itinerary, activity, community, membership, review, post, comment  # noqa: E402
 
 target_metadata = Base.metadata
 

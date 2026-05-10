@@ -65,9 +65,17 @@ class User(Base):
     reviews: Mapped[list["Review"]] = relationship(
         "Review", back_populates="user", cascade="all, delete-orphan"
     )
+    community_posts: Mapped[list["CommunityPost"]] = relationship(
+        "CommunityPost", back_populates="author", cascade="all, delete-orphan"
+    )
+    post_comments: Mapped[list["PostComment"]] = relationship(
+        "PostComment", back_populates="author", cascade="all, delete-orphan"
+    )
 
 
 from app.models.itinerary import Itinerary  # noqa: E402
 from app.models.community import Community  # noqa: E402
 from app.models.membership import Membership  # noqa: E402
 from app.models.review import Review  # noqa: E402
+from app.models.post import CommunityPost  # noqa: E402
+from app.models.comment import PostComment  # noqa: E402

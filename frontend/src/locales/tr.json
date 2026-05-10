@@ -98,7 +98,15 @@
     "description_label": "Açıklama",
     "description_placeholder": "Bu topluluk ne hakkında?",
     "cover_image_label": "Kapak resmi URL'si (isteğe bağlı)",
-    "create_btn": "Topluluk oluştur"
+    "create_btn": "Topluluk oluştur",
+    "no_posts": "Henüz gönderi yok. İlk tartışmayı başlat!",
+    "no_comments": "Henüz yorum yok.",
+    "post_placeholder": "Aklında ne var?",
+    "image_url_placeholder": "Resim URL'si (isteğe bağlı)",
+    "post_btn": "Paylaş",
+    "comment_placeholder": "Yorum yaz...",
+    "comment_btn": "Yorum yap",
+    "login_to_post": "Bu toplulukta gönderi paylaşmak için giriş yap."
   },
   "auth": {
     "welcome": "Tekrar hoş geldiniz",
