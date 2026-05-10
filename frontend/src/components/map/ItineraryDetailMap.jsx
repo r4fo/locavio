@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet'
 import { useTranslation } from 'react-i18next'
 import Badge from '@/components/ui/Badge'
+import { useUiStore } from '@/store/uiStore'
 import { createActivityPin } from './TripPin'
 
 function FitBounds({ bounds }) {
@@ -12,6 +13,25 @@ function FitBounds({ bounds }) {
       map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 })
     }
   }, [bounds, map])
+  return null
+}
+
+function MapResizer() {
+  const map = useMap()
+  const sidebarOpen = useUiStore((state) => state.sidebarOpen)
+
+  useEffect(() => {
+    map.invalidateSize()
+    const onResize = () => map.invalidateSize()
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [map])
+
+  useEffect(() => {
+    const t = setTimeout(() => map.invalidateSize(), 320)
+    return () => clearTimeout(t)
+  }, [sidebarOpen, map])
+
   return null
 }
 
@@ -39,7 +59,7 @@ function ItineraryDetailMap({ activities = [] }) {
   const polylinePositions = validActivities.map((a) => [a.lat, a.lng])
 
   return (
-    <div className="rounded-xl overflow-hidden shadow-sm border border-accent/20" style={{ height: 350 }}>
+    <div className="w-full max-w-full rounded-xl overflow-hidden shadow-sm border border-accent/20" style={{ height: 350 }}>
       <MapContainer
         center={bounds[0]}
         zoom={13}
@@ -51,6 +71,7 @@ function ItineraryDetailMap({ activities = [] }) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
+        <MapResizer />
         <FitBounds bounds={bounds} />
 
         <Polyline
