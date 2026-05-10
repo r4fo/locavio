@@ -39,7 +39,7 @@ import ContentModeration from '@/pages/admin/ContentModeration'
 
 function AppLayout() {
   return (
-    <div className="min-h-screen bg-surface flex flex-col">
+    <div className="min-h-screen bg-surface flex flex-col overflow-x-hidden">
       <Navbar />
       <Sidebar />
       <main className="flex-1 container mx-auto px-4 py-6 max-w-6xl">

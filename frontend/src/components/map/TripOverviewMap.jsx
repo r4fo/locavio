@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { useUiStore } from '@/store/uiStore'
 import { createStatusPin } from './TripPin'
 
 function FitBounds({ bounds }) {
@@ -12,6 +13,26 @@ function FitBounds({ bounds }) {
       map.fitBounds(bounds, { padding: [40, 40], maxZoom: 13 })
     }
   }, [bounds, map])
+  return null
+}
+
+function MapResizer() {
+  const map = useMap()
+  const sidebarOpen = useUiStore((state) => state.sidebarOpen)
+
+  useEffect(() => {
+    map.invalidateSize()
+    const onResize = () => map.invalidateSize()
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [map])
+
+  // Re-invalidate after sidebar slide transition (300 ms) completes
+  useEffect(() => {
+    const t = setTimeout(() => map.invalidateSize(), 320)
+    return () => clearTimeout(t)
+  }, [sidebarOpen, map])
+
   return null
 }
 
@@ -31,7 +52,7 @@ function TripOverviewMap({ itineraries = [] }) {
   const defaultZoom = validItineraries.length > 0 ? 5 : 2
 
   return (
-    <div className="rounded-xl overflow-hidden shadow-sm border border-accent/20" style={{ height: 400 }}>
+    <div className="w-full max-w-full rounded-xl overflow-hidden shadow-sm border border-accent/20" style={{ height: 400 }}>
       <MapContainer
         center={defaultCenter}
         zoom={defaultZoom}
@@ -43,6 +64,7 @@ function TripOverviewMap({ itineraries = [] }) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
+        <MapResizer />
         {validItineraries.length > 0 && <FitBounds bounds={bounds} />}
 
         {validItineraries.map((it) => (
